@@ -47,3 +47,52 @@ test('last coordinates but the length makes it to go off the board', () => {
 
   expect(result).toBe(false);
 });
+
+test('shot hits a ship', () => {
+  const gameBoard = GameBoard();
+
+  gameBoard.placeShip({ length: 2, coordinates: [1, 1] });
+
+  const result = gameBoard.receiveAttack([1, 2]);
+
+  expect(result).toBe('Shot hits.');
+});
+
+test('shot misses', () => {
+  const gameBoard = GameBoard();
+
+  gameBoard.placeShip({ length: 2, coordinates: [1, 1] });
+
+  const result = gameBoard.receiveAttack([1, 3]);
+
+  expect(result).toBe('Shot missed.');
+});
+
+test('shot hit two times at the same coordinates', () => {
+  const gameBoard = GameBoard();
+
+  gameBoard.placeShip({ length: 2, coordinates: [1, 1] });
+  gameBoard.receiveAttack([1, 1]);
+
+  const result = gameBoard.receiveAttack([1, 1]);
+
+  expect(result).toBe('Shot already recorded: Hit.');
+});
+
+test('shot misses two times at the same coordinates', () => {
+  const gameBoard = GameBoard();
+
+  gameBoard.placeShip({ length: 2, coordinates: [1, 1] });
+  gameBoard.receiveAttack([1, 3]);
+
+  const result = gameBoard.receiveAttack([1, 3]);
+
+  expect(result).toBe('Shot already recorded: Miss.');
+});
+
+test('shot outside the board', () => {
+  const gameBoard = GameBoard();
+  const result = gameBoard.receiveAttack([10, 10]);
+
+  expect(result).toBe('Coordinates goes outside the board.');
+});
