@@ -96,3 +96,33 @@ test('shot outside the board', () => {
 
   expect(result).toBe('Coordinates goes outside the board.');
 });
+
+test('sunk one ship but one remains', () => {
+  const gameBoard = GameBoard();
+
+  gameBoard.placeShip({ length: 2, coordinates: [1, 5] });
+  gameBoard.placeShip({ length: 3, coordinates: [3, 7] });
+  gameBoard.placeShip({ length: 3, coordinates: [4, 3] });
+  gameBoard.receiveAttack([1, 5]);
+  gameBoard.receiveAttack([1, 6]);
+
+  const result = gameBoard.allShipsHaveBeenSunk();
+
+  expect(result).toBe(false);
+});
+
+test('sunk all ships', () => {
+  const gameBoard = GameBoard();
+
+  gameBoard.placeShip({ length: 2, coordinates: [1, 5] });
+  gameBoard.placeShip({ length: 3, coordinates: [3, 7] });
+  gameBoard.receiveAttack([1, 5]);
+  gameBoard.receiveAttack([1, 6]);
+  gameBoard.receiveAttack([3, 7]);
+  gameBoard.receiveAttack([3, 8]);
+  gameBoard.receiveAttack([3, 9]);
+
+  const result = gameBoard.allShipsHaveBeenSunk();
+
+  expect(result).toBe(true);
+});
