@@ -1,13 +1,13 @@
 import GameBoard from './game-board-factory';
 
-test('empty coordinates', () => {
+test('place a ship at empty coordinates', () => {
   const gameBoard = GameBoard();
   const result = gameBoard.placeShip({ length: 2, coordinates: [3, 3] });
 
   expect(result).toBe(true);
 });
 
-test('same coordinates', () => {
+test('place a ship at the same coordinates', () => {
   const gameBoard = GameBoard();
 
   gameBoard.placeShip({ length: 2, coordinates: [4, 4] });
@@ -16,7 +16,7 @@ test('same coordinates', () => {
   expect(result).toBe(false);
 });
 
-test('side by side', () => {
+test('place ships side by side', () => {
   const gameBoard = GameBoard();
 
   gameBoard.placeShip({ length: 2, coordinates: [4, 4] });
@@ -25,7 +25,7 @@ test('side by side', () => {
   expect(result).toBe(true);
 });
 
-test('different coordinates but length makes it to overlap with another ship', () => {
+test('place a ship at different coordinates but length makes it to overlap with another ship', () => {
   const gameBoard = GameBoard();
 
   gameBoard.placeShip({ length: 2, coordinates: [4, 4] });
@@ -34,41 +34,31 @@ test('different coordinates but length makes it to overlap with another ship', (
   expect(result).toBe(false);
 });
 
-test('off the board', () => {
+test('place a ship off the board', () => {
   const gameBoard = GameBoard();
   const result = gameBoard.placeShip({ length: 2, coordinates: [10, 10] });
 
   expect(result).toBe(false);
 });
 
-test('last coordinates but the length makes it to go off the board', () => {
+test('place a ship at last coordinates but the length makes it to go off the board', () => {
   const gameBoard = GameBoard();
   const result = gameBoard.placeShip({ length: 2, coordinates: [9, 9] });
 
   expect(result).toBe(false);
 });
 
-test('shot hits a ship', () => {
+test('valid shot', () => {
   const gameBoard = GameBoard();
 
   gameBoard.placeShip({ length: 2, coordinates: [1, 1] });
 
   const result = gameBoard.receiveAttack([1, 2]);
 
-  expect(result).toBe('Shot hits.');
+  expect(result).toBe(true);
 });
 
-test('shot misses', () => {
-  const gameBoard = GameBoard();
-
-  gameBoard.placeShip({ length: 2, coordinates: [1, 1] });
-
-  const result = gameBoard.receiveAttack([1, 3]);
-
-  expect(result).toBe('Shot missed.');
-});
-
-test('shot hit two times at the same coordinates', () => {
+test('invalid shot. shot two time at the same node', () => {
   const gameBoard = GameBoard();
 
   gameBoard.placeShip({ length: 2, coordinates: [1, 1] });
@@ -76,25 +66,14 @@ test('shot hit two times at the same coordinates', () => {
 
   const result = gameBoard.receiveAttack([1, 1]);
 
-  expect(result).toBe('Shot already recorded: Hit.');
+  expect(result).toBe(false);
 });
 
-test('shot misses two times at the same coordinates', () => {
-  const gameBoard = GameBoard();
-
-  gameBoard.placeShip({ length: 2, coordinates: [1, 1] });
-  gameBoard.receiveAttack([1, 3]);
-
-  const result = gameBoard.receiveAttack([1, 3]);
-
-  expect(result).toBe('Shot already recorded: Miss.');
-});
-
-test('shot outside the board', () => {
+test('invalid shot. shot outside the board', () => {
   const gameBoard = GameBoard();
   const result = gameBoard.receiveAttack([10, 10]);
 
-  expect(result).toBe('Coordinates goes outside the board.');
+  expect(result).toBe(false);
 });
 
 test('sunk one ship but one remains', () => {
