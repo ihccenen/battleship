@@ -32,17 +32,17 @@ const GameBoard = () => {
     receiveAttack: (coordinates) => {
       const coord = coordinates.join(', ');
 
-      if (!board.has(coord)) return 'Coordinates goes outside the board.';
+      if (!board.has(coord)) return false;
 
-      if (hitsLis.has(coord)) return 'Shot already recorded: Hit.';
+      if (hitsLis.has(coord)) return false;
 
-      if (missesList.has(coord)) return 'Shot already recorded: Miss.';
+      if (missesList.has(coord)) return false;
 
       const ship = board.get(coord);
 
       if (ship == null) {
         missesList.add(coord);
-        return 'Shot missed.';
+        return true;
       }
 
       ship.hit();
@@ -50,7 +50,7 @@ const GameBoard = () => {
 
       if (ship.isSunk()) remainingShips -= 1;
 
-      return 'Shot hits.';
+      return true;
     },
     allShipsHaveBeenSunk() {
       return remainingShips < 1;
