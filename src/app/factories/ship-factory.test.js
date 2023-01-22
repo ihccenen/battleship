@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import Ship from './ship-factory';
 
 test('isSunk if 0 hits and length 2', () => {

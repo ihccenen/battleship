@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import Player from './player-factory';
 
 test('player legal move', () => {

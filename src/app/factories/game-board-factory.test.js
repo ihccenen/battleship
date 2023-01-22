@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import GameBoard from './game-board-factory';
 
 test('place a ship at empty coordinates', () => {
