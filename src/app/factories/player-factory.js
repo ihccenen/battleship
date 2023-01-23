@@ -1,5 +1,3 @@
-import GameBoard from './game-board-factory';
-
 const Player = () => ({
   attackEnemyBoard: (coordinates, attackFn) => attackFn(coordinates),
   randomAttackEnemyBoard: (attackFn) => {
