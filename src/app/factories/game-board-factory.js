@@ -13,7 +13,7 @@ const GameBoard = () => {
   }
 
   return {
-    placeShip: ({ length, coordinates }) => {
+    placeShip({ length, coordinates }) {
       for (let i = coordinates[1]; i < coordinates[1] + length; i += 1) {
         const node = `${coordinates[0]}, ${i}`;
 
@@ -29,7 +29,7 @@ const GameBoard = () => {
 
       return true;
     },
-    receiveAttack: (coordinates) => {
+    receiveAttack(coordinates) {
       const coord = coordinates.join(', ');
 
       if (!board.has(coord)) return false;

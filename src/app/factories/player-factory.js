@@ -1,6 +1,8 @@
 const Player = () => ({
-  attackEnemyBoard: (coordinates, attackFn) => attackFn(coordinates),
-  randomAttackEnemyBoard: (attackFn) => {
+  attackEnemyBoard(coordinates, attackFn) {
+    return attackFn(coordinates);
+  },
+  randomAttackEnemyBoard(attackFn) {
     let attackIsLegal = false;
 
     while (!attackIsLegal) {
