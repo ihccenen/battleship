@@ -3,18 +3,18 @@ const Player = () => ({
     return attackFn(coordinates);
   },
   randomAttackEnemyBoard(attackFn) {
-    let attackIsLegal = false;
+    let attack = 'Invalid shot';
 
-    while (!attackIsLegal) {
+    while (attack === 'Invalid shot') {
       const coordinates = [];
 
       coordinates.push(Math.floor(Math.random() * 10));
       coordinates.push(Math.floor(Math.random() * 10));
 
-      attackIsLegal = attackFn(coordinates);
+      attack = attackFn(coordinates);
     }
 
-    return attackIsLegal;
+    return attack !== 'Invalid shot';
   },
 });
 
