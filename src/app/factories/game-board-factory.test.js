@@ -67,14 +67,14 @@ test('invalid shot. shot two time at the same node', () => {
 
   const result = gameBoard.receiveAttack([1, 1]);
 
-  expect(result).toBe(false);
+  expect(result).toBe('Invalid shot');
 });
 
 test('invalid shot. shot outside the board', () => {
   const gameBoard = GameBoard();
   const result = gameBoard.receiveAttack([10, 10]);
 
-  expect(result).toBe(false);
+  expect(result).toBe('Invalid shot');
 });
 
 test('sunk one ship but one remains', () => {
@@ -105,4 +105,17 @@ test('sunk all ships', () => {
   const result = gameBoard.allShipsHaveBeenSunk();
 
   expect(result).toBe(true);
+});
+
+test.only('board info', () => {
+  const gameBoard = GameBoard();
+
+  gameBoard.placeShip({ length: 2, coordinates: [0, 0] });
+  gameBoard.receiveAttack([0, 0]);
+  gameBoard.receiveAttack([0, 1]);
+  gameBoard.receiveAttack([0, 3]);
+
+  const info = gameBoard.getBoardInfo();
+
+  expect(info).toStrictEqual({ ship: ['0, 0', '0, 1'], miss: ['0, 3'], hit: ['0, 0', '0, 1'] });
 });
