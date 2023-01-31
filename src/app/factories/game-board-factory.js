@@ -58,6 +58,31 @@ const GameBoard = () => {
         }
       }
     },
+    moveShip({ oldCoordinates, newCoordinates }) {
+      const ship = shipsCoordinates.get(oldCoordinates.join(', '));
+
+      const j = ship.axis === 'horizontal' ? oldCoordinates[0] : oldCoordinates[1];
+
+      shipsCoordinates.delete(oldCoordinates.join(', '));
+
+      for (let i = j; i < j + ship.length; i += 1) {
+        let node = null;
+        if (ship.axis === 'horizontal') node = `${i}, ${oldCoordinates[1]}`;
+        else node = `${oldCoordinates[0]}, ${i}`;
+
+        board.set(node);
+      }
+
+      const valid = this.placeShip({ ...ship, coordinates: newCoordinates });
+
+      if (valid === false) {
+        this.placeShip({ ...ship, coordinates: oldCoordinates });
+
+        return ship;
+      }
+
+      return shipsCoordinates.get(newCoordinates.join(', '));
+    },
     rotateShip(coordinates) {
       const ship = shipsCoordinates.get(coordinates.join(', '));
 
@@ -73,10 +98,10 @@ const GameBoard = () => {
 
       const valid = this.placeShip({ ...ship, coordinates, axis: ship.axis === 'horizontal' ? 'vertical' : 'horizontal' });
 
-      if (!valid) {
-        this.placeShip(ship);
+      if (valid === false) {
+        this.placeShip({ ...ship, coordinates });
 
-        return ship;
+        return false;
       }
 
       return shipsCoordinates.get(coordinates.join(', '));
