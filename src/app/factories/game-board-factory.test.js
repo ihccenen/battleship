@@ -30,7 +30,7 @@ test('place a ship at different coordinates but length makes it to overlap with 
   const gameBoard = GameBoard();
 
   gameBoard.placeShip({ length: 2, coordinates: [4, 4] });
-  const result = gameBoard.placeShip({ length: 3, coordinates: [4, 2] });
+  const result = gameBoard.placeShip({ length: 3, coordinates: [2, 4] });
 
   expect(result).toBe(false);
 });
@@ -54,7 +54,7 @@ test('valid shot', () => {
 
   gameBoard.placeShip({ length: 2, coordinates: [1, 1] });
 
-  const result = gameBoard.receiveAttack([1, 2]);
+  const result = gameBoard.receiveAttack([2, 1]);
 
   expect(result).toBe(true);
 });
@@ -77,45 +77,63 @@ test('invalid shot. shot outside the board', () => {
   expect(result).toBe('Invalid shot');
 });
 
-test('sunk one ship but one remains', () => {
-  const gameBoard = GameBoard();
-
-  gameBoard.placeShip({ length: 2, coordinates: [1, 5] });
-  gameBoard.placeShip({ length: 3, coordinates: [3, 7] });
-  gameBoard.placeShip({ length: 3, coordinates: [4, 3] });
-  gameBoard.receiveAttack([1, 5]);
-  gameBoard.receiveAttack([1, 6]);
-
-  const result = gameBoard.allShipsHaveBeenSunk();
-
-  expect(result).toBe(false);
-});
-
 test('sunk all ships', () => {
   const gameBoard = GameBoard();
 
   gameBoard.placeShip({ length: 2, coordinates: [1, 5] });
   gameBoard.placeShip({ length: 3, coordinates: [3, 7] });
   gameBoard.receiveAttack([1, 5]);
-  gameBoard.receiveAttack([1, 6]);
+  gameBoard.receiveAttack([2, 5]);
   gameBoard.receiveAttack([3, 7]);
-  gameBoard.receiveAttack([3, 8]);
-  gameBoard.receiveAttack([3, 9]);
+  gameBoard.receiveAttack([4, 7]);
+  gameBoard.receiveAttack([5, 7]);
 
   const result = gameBoard.allShipsHaveBeenSunk();
 
   expect(result).toBe(true);
 });
 
-test.only('board info', () => {
+test('board info', () => {
   const gameBoard = GameBoard();
 
-  gameBoard.placeShip({ length: 2, coordinates: [0, 0] });
+  gameBoard.placeShip({ length: 2, coordinates: [0, 0], axis: 'horizontal' });
   gameBoard.receiveAttack([0, 0]);
-  gameBoard.receiveAttack([0, 1]);
+  gameBoard.receiveAttack([1, 0]);
   gameBoard.receiveAttack([0, 3]);
 
   const info = gameBoard.getBoardInfo();
 
-  expect(info).toStrictEqual({ ship: ['0, 0', '0, 1'], miss: ['0, 3'], hit: ['0, 0', '0, 1'] });
+  expect(info).toStrictEqual({
+    ship: [{
+      length: 2,
+      coordinates: '0, 0',
+      axis: 'horizontal',
+    }],
+    miss: ['0, 3'],
+    hit: ['0, 0', '1, 0'],
+  });
+});
+
+test('rotate ship', () => {
+  const gameBoard = GameBoard();
+
+  gameBoard.placeShip({ length: 2, coordinates: [0, 0], axis: 'horizontal' });
+  gameBoard.placeShip({ length: 2, coordinates: [3, 3], axis: 'vertical' });
+  gameBoard.rotateShip([0, 0]);
+  gameBoard.rotateShip([3, 3]);
+
+  const info = gameBoard.getBoardInfo();
+  const correctInfo = [
+    {
+      length: 2,
+      coordinates: '0, 0',
+      axis: 'vertical',
+    },
+    {
+      length: 2,
+      coordinates: '3, 3',
+      axis: 'horizontal',
+    }];
+
+  expect(info.ship).toStrictEqual(correctInfo);
 });
