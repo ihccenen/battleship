@@ -137,3 +137,23 @@ test('rotate ship', () => {
 
   expect(info.ship).toStrictEqual(correctInfo);
 });
+
+test('move ship', () => {
+  const gameBoard = GameBoard();
+
+  gameBoard.placeShip({ length: 2, coordinates: [0, 0] });
+  const result = gameBoard.moveShip({ oldCoordinates: [0, 0], newCoordinates: [3, 3] });
+
+  expect(result).toStrictEqual({ length: 2, coordinates: '3, 3', axis: 'horizontal' });
+});
+
+test('move ship to an invalid coordinates', () => {
+  const gameBoard = GameBoard();
+
+  gameBoard.placeShip({ length: 2, coordinates: [0, 0] });
+  gameBoard.placeShip({ length: 2, coordinates: [4, 4] });
+
+  const result = gameBoard.moveShip({ oldCoordinates: [0, 0], newCoordinates: [4, 4] });
+
+  expect(result).toStrictEqual({ length: 2, coordinates: '0, 0', axis: 'horizontal' });
+});
