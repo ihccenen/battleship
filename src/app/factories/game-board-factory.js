@@ -5,6 +5,7 @@ const GameBoard = () => {
   const shipsCoordinates = new Map();
   const missesList = new Set();
   const hitsList = new Set();
+  let sunkShips = [];
   let remainingShips = 0;
 
   for (let i = 0; i < 10; i += 1) {
@@ -26,7 +27,9 @@ const GameBoard = () => {
       }
 
       const ship = Ship(length);
-      shipsCoordinates.set(coordinates.join(', '), { length, coordinates: coordinates.join(', '), axis });
+      shipsCoordinates.set(coordinates.join(', '), {
+        length, coordinates: coordinates.join(', '), axis, list: [],
+      });
       remainingShips += 1;
 
       for (let i = j; i < j + length; i += 1) {
@@ -35,6 +38,7 @@ const GameBoard = () => {
         else node = `${coordinates[0]}, ${i}`;
 
         board.set(node, ship);
+        shipsCoordinates.get(coordinates.join(', ')).list.push(node);
       }
 
       return true;
@@ -119,15 +123,23 @@ const GameBoard = () => {
 
       if (ship == null) {
         missesList.add(coord);
-        return false;
+        return 'Miss';
       }
 
       ship.hit();
       hitsList.add(coord);
 
-      if (ship.isSunk()) remainingShips -= 1;
+      if (ship.isSunk()) {
+        remainingShips -= 1;
+        const headCoordinates = Array.from(shipsCoordinates.keys())
+          .filter((key) => shipsCoordinates.get(key).list.includes(coord)).toString();
 
-      return true;
+        sunkShips = sunkShips.concat(shipsCoordinates.get(headCoordinates).list);
+
+        return 'Sunk';
+      }
+
+      return 'Hit';
     },
     allShipsHaveBeenSunk() {
       return remainingShips < 1;
@@ -139,6 +151,7 @@ const GameBoard = () => {
 
       info.miss = Array.from(missesList);
       info.hit = Array.from(hitsList);
+      info.sunkShips = sunkShips;
 
       return info;
     },
