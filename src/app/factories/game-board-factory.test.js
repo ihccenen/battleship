@@ -56,7 +56,7 @@ test('valid shot', () => {
 
   const result = gameBoard.receiveAttack([2, 1]);
 
-  expect(result).toBe(true);
+  expect(result).toBe('Hit');
 });
 
 test('invalid shot. shot two time at the same node', () => {
@@ -108,9 +108,11 @@ test('board info', () => {
       length: 2,
       coordinates: '0, 0',
       axis: 'horizontal',
+      list: ['0, 0', '1, 0'],
     }],
     miss: ['0, 3'],
     hit: ['0, 0', '1, 0'],
+    sunkShips: ['0, 0', '1, 0'],
   });
 });
 
@@ -128,11 +130,13 @@ test('rotate ship', () => {
       length: 2,
       coordinates: '0, 0',
       axis: 'vertical',
+      list: ['0, 0', '0, 1'],
     },
     {
       length: 2,
       coordinates: '3, 3',
       axis: 'horizontal',
+      list: ['3, 3', '4, 3'],
     }];
 
   expect(info.ships).toStrictEqual(correctInfo);
@@ -144,7 +148,9 @@ test('move ship', () => {
   gameBoard.placeShip({ length: 2, coordinates: [0, 0] });
   const result = gameBoard.moveShip({ oldCoordinates: [0, 0], newCoordinates: [3, 3] });
 
-  expect(result).toStrictEqual({ length: 2, coordinates: '3, 3', axis: 'horizontal' });
+  expect(result).toStrictEqual({
+    length: 2, coordinates: '3, 3', axis: 'horizontal', list: ['3, 3', '4, 3'],
+  });
 });
 
 test('move ship to an invalid coordinates', () => {
@@ -155,5 +161,7 @@ test('move ship to an invalid coordinates', () => {
 
   const result = gameBoard.moveShip({ oldCoordinates: [0, 0], newCoordinates: [4, 4] });
 
-  expect(result).toStrictEqual({ length: 2, coordinates: '0, 0', axis: 'horizontal' });
+  expect(result).toStrictEqual({
+    length: 2, coordinates: '0, 0', axis: 'horizontal', list: ['0, 0', '1, 0'],
+  });
 });
