@@ -10,7 +10,7 @@ test('player legal move', () => {
 
   const result = p1.attackEnemyBoard([1, 1], enemyBoard.receiveAttack);
 
-  expect(result).toBe(true);
+  expect(result).toBe('Hit');
 });
 
 test('AI random legal move', () => {
