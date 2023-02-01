@@ -1,0 +1,103 @@
+* {
+  box-sizing: border-box;
+
+}
+
+/* body {
+  margin: 0;
+  padding: 0; 
+}*/
+
+.content {
+  display: flex;
+  gap: 5rem;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(10, 34px);
+}
+
+.cell {
+  position: relative;
+  height: 34px;
+  border: 1px solid;
+  user-select: none;
+}
+
+.cell.sunk {
+  background-color: gray;
+}
+
+.ship {
+  position: absolute;
+  z-index: 1;
+  background-color: antiquewhite;
+  border: 2px solid purple;
+  opacity: 0.5;
+}
+
+.ship.drag {
+  cursor: move;
+}
+
+.ship.horizontal {
+  height: 32px;
+  top: 0;
+}
+
+.ship.length-2.horizontal {
+  width: 67px;
+}
+
+.ship.length-3.horizontal {
+  width: 101px;
+}
+
+.ship.length-4.horizontal {
+  width: 135px;
+}
+
+.ship.length-5.horizontal {
+  width: 169px;
+}
+
+.ship.vertical {
+  top: 0;
+  right: 0;
+  left: 0;
+}
+
+.ship.length-2.vertical {
+  height: 67px;
+}
+
+.ship.length-3.vertical {
+  height: 101px;
+}
+
+.ship.length-4.vertical {
+  height: 135px;
+}
+
+.ship.length-5.vertical {
+  height: 169px;
+}
+
+.cell.hit {
+  position: relative;
+  background-color: red;
+}
+
+.cell.miss {
+  background-color: sienna;
+}
+
+.hidden {
+  display: none;
+}
+
+.disable-board {
+  pointer-events: none;
+}
+
