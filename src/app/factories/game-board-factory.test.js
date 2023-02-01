@@ -104,7 +104,7 @@ test('board info', () => {
   const info = gameBoard.getBoardInfo();
 
   expect(info).toStrictEqual({
-    ship: [{
+    ships: [{
       length: 2,
       coordinates: '0, 0',
       axis: 'horizontal',
@@ -135,7 +135,7 @@ test('rotate ship', () => {
       axis: 'horizontal',
     }];
 
-  expect(info.ship).toStrictEqual(correctInfo);
+  expect(info.ships).toStrictEqual(correctInfo);
 });
 
 test('move ship', () => {
