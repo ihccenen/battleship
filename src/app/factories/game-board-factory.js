@@ -135,7 +135,7 @@ const GameBoard = () => {
     getBoardInfo() {
       const info = {};
 
-      info.ship = Array.from(shipsCoordinates.values());
+      info.ships = Array.from(shipsCoordinates.values());
 
       info.miss = Array.from(missesList);
       info.hit = Array.from(hitsList);
