@@ -14,43 +14,54 @@ const GameBoard = () => {
     }
   }
 
+  const setCoordinatesInfo = ({ length, coordinates, axis }) => (fn) => {
+    const j = axis === 'horizontal' ? coordinates[0] : coordinates[1];
+
+    for (let i = j; i < j + length; i += 1) {
+      let node = null;
+      if (axis === 'horizontal') node = `${i}, ${coordinates[1]}`;
+      else node = `${coordinates[0]}, ${i}`;
+
+      fn(node);
+    }
+  };
+
   return {
     placeShip({ length, coordinates, axis = 'horizontal' } = {}) {
-      const j = axis === 'horizontal' ? coordinates[0] : coordinates[1];
+      const applyFnToCoordinates = setCoordinatesInfo({ length, coordinates, axis });
 
-      for (let i = j; i < j + length; i += 1) {
-        let node = null;
-        if (axis === 'horizontal') node = `${i}, ${coordinates[1]}`;
-        else node = `${coordinates[0]}, ${i}`;
+      let valid = true;
 
-        if (!board.has(node) || board.get(node) != null) return false;
-      }
+      applyFnToCoordinates((node) => {
+        if (!board.has(node) || board.get(node) != null) valid = false;
+      });
+
+      if (valid === false) return false;
 
       const ship = Ship(length);
+
       shipsCoordinates.set(coordinates.join(', '), {
         length, coordinates: coordinates.join(', '), axis, list: [],
       });
       remainingShips += 1;
 
-      for (let i = j; i < j + length; i += 1) {
-        let node = null;
-        if (axis === 'horizontal') node = `${i}, ${coordinates[1]}`;
-        else node = `${coordinates[0]}, ${i}`;
-
+      applyFnToCoordinates((node) => {
         board.set(node, ship);
         shipsCoordinates.get(coordinates.join(', ')).list.push(node);
-      }
+      });
 
       return true;
     },
     randomPlaceShip() {
       const shipsLength = [5, 4, 3, 3, 2];
+      const axisArr = ['horizontal', 'vertical'];
 
       for (let i = 0; i < shipsLength.length; i += 1) {
         let validPlaceShip = false;
 
         while (!validPlaceShip) {
           const coordinates = [];
+          const axis = axisArr[Math.floor(Math.random() * axisArr.length)];
 
           coordinates.push(Math.floor(Math.random() * 10));
           coordinates.push(Math.floor(Math.random() * 10));
@@ -58,6 +69,7 @@ const GameBoard = () => {
           validPlaceShip = this.placeShip({
             length: shipsLength[i],
             coordinates,
+            axis,
           });
         }
       }
@@ -65,17 +77,11 @@ const GameBoard = () => {
     moveShip({ oldCoordinates, newCoordinates }) {
       const ship = shipsCoordinates.get(oldCoordinates.join(', '));
 
-      const j = ship.axis === 'horizontal' ? oldCoordinates[0] : oldCoordinates[1];
-
       shipsCoordinates.delete(oldCoordinates.join(', '));
 
-      for (let i = j; i < j + ship.length; i += 1) {
-        let node = null;
-        if (ship.axis === 'horizontal') node = `${i}, ${oldCoordinates[1]}`;
-        else node = `${oldCoordinates[0]}, ${i}`;
+      const applyFnToCoordinates = setCoordinatesInfo({ ...ship, coordinates: oldCoordinates });
 
-        board.set(node);
-      }
+      applyFnToCoordinates((node) => board.set(node));
 
       const valid = this.placeShip({ ...ship, coordinates: newCoordinates });
 
@@ -89,16 +95,9 @@ const GameBoard = () => {
     },
     rotateShip(coordinates) {
       const ship = shipsCoordinates.get(coordinates.join(', '));
+      const applyFnToCoordinates = setCoordinatesInfo({ ...ship, coordinates });
 
-      const j = ship.axis === 'horizontal' ? coordinates[0] : coordinates[1];
-
-      for (let i = j; i < j + ship.length; i += 1) {
-        let node = null;
-        if (ship.axis === 'horizontal') node = `${i}, ${coordinates[1]}`;
-        else node = `${coordinates[0]}, ${i}`;
-
-        board.set(node);
-      }
+      applyFnToCoordinates((node) => board.set(node));
 
       const valid = this.placeShip({ ...ship, coordinates, axis: ship.axis === 'horizontal' ? 'vertical' : 'horizontal' });
 
@@ -113,11 +112,11 @@ const GameBoard = () => {
     receiveAttack(coordinates) {
       const coord = coordinates.join(', ');
 
-      if (!board.has(coord)) return 'Invalid shot';
-
-      if (hitsList.has(coord)) return 'Invalid shot';
-
-      if (missesList.has(coord)) return 'Invalid shot';
+      if (!board.has(coord)
+      || hitsList.has(coord)
+      || missesList.has(coord)) {
+        return 'Invalid shot';
+      }
 
       const ship = board.get(coord);
 
