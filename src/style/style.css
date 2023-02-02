@@ -1,6 +1,5 @@
 * {
   box-sizing: border-box;
-
 }
 
 /* body {
@@ -39,6 +38,10 @@
 
 .ship.drag {
   cursor: move;
+}
+
+.ship.drop {
+  z-index: -1;
 }
 
 .ship.horizontal {

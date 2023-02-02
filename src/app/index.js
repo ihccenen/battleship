@@ -116,7 +116,7 @@ function handleDrop(e) {
 
   ship.style.left = `${left + 16}px`;
   ship.style.top = `${top + 16}px`;
-  ship.style.zIndex = -1;
+  ship.classList.add('drop');
 
   const { x, y } = ship.getBoundingClientRect();
 
@@ -127,7 +127,7 @@ function handleDrop(e) {
 
     ship.style.left = '';
     ship.style.top = '';
-    ship.style.zIndex = '';
+    ship.classList.remove('drop');
     cell.append(ship);
 
     return;
