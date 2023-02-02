@@ -84,7 +84,7 @@ function rotateShip(e) {
 
   const { length, axis } = info;
 
-  e.target.className = `ship length-${length} ${axis}`;
+  e.target.className = `ship drag length-${length} ${axis}`;
 }
 
 function handleDragStart(e) {
@@ -122,7 +122,7 @@ function handleDrop(e) {
 
   const node = document.elementFromPoint(x, y);
 
-  if (node == null || node === ship) {
+  if (node?.dataset?.coordinates == null) {
     const cell = board.querySelector(`[data-coordinates="${coord}"]`);
 
     ship.style.left = '';
