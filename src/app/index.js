@@ -11,13 +11,17 @@ function render(selector, info, className = '') {
 
     div.classList.add('test');
 
-    const cell = boardContainer.querySelector(`[data-coordinates="${info[0]}"]`);
+    const cell = boardContainer.querySelector(
+      `[data-coordinates="${info[0]}"]`,
+    );
 
     cell.appendChild(div);
   }
 
   for (let i = 0; i < info.length; i += 1) {
-    const cell = boardContainer.querySelector(`[data-coordinates="${info[i]}"]`);
+    const cell = boardContainer.querySelector(
+      `[data-coordinates="${info[i]}"]`,
+    );
 
     cell.className = `cell ${className}`;
   }
@@ -142,8 +146,10 @@ function handleDrop(e) {
   addShipDiv({
     ...newShip,
     player,
-    callbacks: [{ type: 'click', fn: rotateShip },
-      { type: 'dragstart', fn: handleDragStart }],
+    callbacks: [
+      { type: 'click', fn: rotateShip },
+      { type: 'dragstart', fn: handleDragStart },
+    ],
   });
 
   e.preventDefault();
@@ -171,10 +177,10 @@ function attackBoard(e) {
   const winner = game.checkGameEnd();
 
   if (winner !== false) {
-    const player = document.querySelector('[data-player="winner"]');
+    const div = document.querySelector('[data-player="winner"]');
     const enemyBoard = document.querySelector('[data-board="player2"]');
 
-    player.textContent = winner;
+    div.textContent = `Winner: ${winner}`;
     enemyBoard.removeEventListener('click', attackBoard);
   }
 }
@@ -194,6 +200,7 @@ function startGame(e) {
     ship.removeEventListener('dragstart', handleDragStart);
     ship.draggable = false;
     ship.classList.remove('drag');
+    ship.classList.add('playing');
   });
 
   board.removeEventListener('dragover', handleDragOver);
@@ -208,8 +215,10 @@ function initialBoard() {
   game.getBoardsInfo().player1.ships.forEach((ship) => {
     addShipDiv({
       ...ship,
-      callbacks: [{ type: 'click', fn: rotateShip },
-        { type: 'dragstart', fn: handleDragStart }],
+      callbacks: [
+        { type: 'click', fn: rotateShip },
+        { type: 'dragstart', fn: handleDragStart },
+      ],
       player: 'player1',
     });
   });
@@ -224,8 +233,10 @@ function initialBoard() {
 
 function restartGame(e) {
   const startBtn = document.querySelector('[data-btn="start"]');
+  const div = document.querySelector('[data-player="winner"]');
 
   game.restart();
+  div.textContent = '';
 
   const enemyBoard = document.querySelector('[data-board="player2"]');
 
