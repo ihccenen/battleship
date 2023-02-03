@@ -1,39 +1,79 @@
 * {
+  font-family: Tahoma, sans-serif;
   box-sizing: border-box;
+  letter-spacing: 1px;
 }
 
-/* body {
+
+body {
+  font-size: 1.2rem;
   margin: 0;
-  padding: 0; 
-}*/
+  padding: 0;
+}
+
+.grid {
+  display: grid;
+}
 
 .content {
+  gap: 2rem;
+  justify-content: center;
+  padding: 3em;
+}
+
+.top {
   display: flex;
+  justify-content: space-between;
+}
+
+button {
+  font-weight: 600;
+  color: #fff;
+  width: min-content;
+  border: none;
+  padding: 0.6em 2em;
+  border-radius: 1rem;
+  cursor: pointer;
+}
+
+.start-btn {
+  background-color: #71a08a;
+}
+
+.restart-btn {
+  background-color: #E22B63;
+}
+
+.boards-container {
+  grid-template-columns: 1fr 1fr;
   gap: 5rem;
 }
 
 .board {
-  display: grid;
   grid-template-columns: repeat(10, 34px);
+
 }
 
 .cell {
   position: relative;
   height: 34px;
-  border: 1px solid;
+  border: 1px solid #75743E;
   user-select: none;
 }
 
-.cell.sunk {
-  background-color: gray;
+.sunk {
+  background-color: #423f3f;
 }
 
 .ship {
   position: absolute;
   z-index: 1;
-  background-color: antiquewhite;
-  border: 2px solid purple;
-  opacity: 0.5;
+  background-color: #A58EC3;
+  border: 1px solid #75743E;
+}
+
+.ship.playing {
+  z-index: -1;
 }
 
 .ship.drag {
@@ -89,18 +129,22 @@
 
 .cell.hit {
   position: relative;
-  background-color: red;
+  background-color: #a80a39;
+}
+
+.cell.hit::before {
+  position: absolute;
+  color: #fadada;
+  content: 'x';
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -60%);
 }
 
 .cell.miss {
-  background-color: sienna;
+  background-color: #539cb9;
 }
 
 .hidden {
   display: none;
 }
-
-.disable-board {
-  pointer-events: none;
-}
-
