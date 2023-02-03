@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Battleship</title>
-  <script src="./main.js" defer></script>
-</head>
-<body>
-  <div class="content">
-    <div class="board" data-board="player1"></div>
-    <div class="board" data-board="player2"></div>
-    <div data-player="winner"></div>
-    <button data-btn="start" type="button">start</button>
-    <button class="hidden"  data-btn="restart" type="button">restart</button>
-  </div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Battleship</title>
+    <script src="./main.js" defer></script>
+  </head>
+  <body>
+    <div class="content grid">
+      <div class="top grid">
+        <button class="start-btn" data-btn="start" type="button">Start</button>
+        <button class="restart-btn hidden" data-btn="restart" type="button">
+          Restart
+        </button>
+        <div data-player="winner"></div>
+      </div>
+      <div class="boards-container grid">
+        <div class="board grid" data-board="player1"></div>
+        <div class="board grid" data-board="player2"></div>
+      </div>
+    </div>
+  </body>
 </html>
