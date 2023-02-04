@@ -3,8 +3,8 @@ import Player from './factories/player-factory';
 import parseIntStr from './parseIntStr';
 
 const Game = () => {
-  const player1 = Player();
-  const player2 = Player();
+  let player1 = Player();
+  let player2 = Player();
   let player1Board = GameBoard();
   let player2Board = GameBoard();
   let currPlayer = player1;
@@ -22,6 +22,9 @@ const Game = () => {
       return false;
     },
     restart() {
+      player1 = Player();
+      player2 = Player();
+
       player1Board = GameBoard();
       player2Board = GameBoard();
 
@@ -54,7 +57,6 @@ const Game = () => {
     },
     takeTurn(coordinates) {
       const arr = coordinates.split(', ');
-
       const attack = currPlayer.attackEnemyBoard(arr, currEnemyBoard.receiveAttack);
 
       if (attack === 'Invalid shot') return false;
