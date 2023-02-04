@@ -4,7 +4,6 @@
   letter-spacing: 1px;
 }
 
-
 body {
   font-size: 1.2rem;
   margin: 0;
@@ -41,7 +40,7 @@ button {
 }
 
 .restart-btn {
-  background-color: #E22B63;
+  background-color: #e22b63;
 }
 
 .boards-container {
@@ -51,13 +50,12 @@ button {
 
 .board {
   grid-template-columns: repeat(10, 34px);
-
 }
 
 .cell {
   position: relative;
   height: 34px;
-  border: 1px solid #75743E;
+  border: 1px solid #75743e;
   user-select: none;
 }
 
@@ -68,8 +66,8 @@ button {
 .ship {
   position: absolute;
   z-index: 1;
-  background-color: #A58EC3;
-  border: 1px solid #75743E;
+  background-color: #a58ec3;
+  border: 1px solid #75743e;
 }
 
 .ship.playing {
